@@ -330,10 +330,13 @@ def _message_attributes(data: dict):
     delay=1.5,
     backoff=1,
 )
-def store_sqs(queue_name: str, message_body: str, deduplicate: bool = False, deduplication_id: Union[str, None] = None, **kwargs) -> bool:
-    internals.logger.info(f"storing {queue_name} message {queue_name}")
-    if deduplicate and not deduplication_id:
-        deduplication_id = sha256(message_body.encode()).hexdigest()
+def store_sqs(queue_name: str, message_body: str, deduplicate: bool = False, deduplication_id: Union[str, None] = None, message_group_id: Union[str, None] = None, **kwargs) -> bool:
+    internals.logger.info(f"storing {queue_name} message {message_body}")
+    if queue_name.endswith('.fifo'):
+        if deduplicate and not deduplication_id:
+            deduplication_id = sha256(message_body.encode()).hexdigest()
+        if not message_group_id:
+            message_group_id = deduplication_id
     try:
         queue = sqs_client.get_queue_url(QueueName=queue_name)
         if not queue.get('QueueUrl'):
@@ -348,6 +351,8 @@ def store_sqs(queue_name: str, message_body: str, deduplicate: bool = False, ded
             params['MessageAttributes'] = _message_attributes({**kwargs})
         if deduplicate:
             params['MessageDeduplicationId'] = deduplication_id
+        if message_group_id:
+            params['MessageGroupId'] = message_group_id
 
         response = sqs_client.send_message(**params)
         return (

@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "trivialscan_monitor_queue_iam_policy" {
       "sqs:Get*",
     ]
     resources = [
-      "arn:aws:sqs:*:${local.aws_master_account_id}:${lower(var.app_env)}-reconnaissance.fifo"
+      aws_sqs_queue.trivialscan_reconnaissance_queue.arn
     ]
   }
   statement {

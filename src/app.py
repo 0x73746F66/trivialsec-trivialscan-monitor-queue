@@ -6,7 +6,7 @@ import services.aws
 
 
 def handler(event, context):
-    queue_name = f"{internals.APP_ENV.lower()}-reconnaissance.fifo"
+    queue_name = f"{internals.APP_ENV.lower()}-reconnaissance"
     for object_key in services.aws.list_s3(
         prefix_key=f"{internals.APP_ENV}/accounts/"
     ):
@@ -28,7 +28,7 @@ def handler(event, context):
                     'port': 443,
                     'type': models.ScanRecordType.MONITORING,
                 }, default=str),
-                deduplicate=True,
+                deduplicate=False,
                 http_paths=["/"],
                 account=account_name,  # type: ignore
                 queued_timestamp=monitor_target.timestamp,  # JavaScript support

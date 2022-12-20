@@ -21,7 +21,8 @@ resource "aws_lambda_function" "trivialscan_monitor_queue" {
     create_before_destroy = true
   }
   depends_on = [
-    aws_iam_role_policy_attachment.policy_attach
+    aws_iam_role_policy_attachment.policy_attach,
+    aws_sqs_queue.trivialscan_reconnaissance_queue
   ]
   tags = local.tags
 }
