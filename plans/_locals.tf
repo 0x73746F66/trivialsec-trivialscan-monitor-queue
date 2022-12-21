@@ -4,8 +4,8 @@ locals {
     python_version        = "python3.9"
     source_file           = "${lower(var.app_env)}-${var.app_name}.zip"
     function_name         = "${lower(var.app_env)}-trivialscan-monitor-queue"
-    timeout               = 150
-    memory_size           = 512
+    timeout               = 60
+    memory_size           = 128
     tags                  = {
         ProjectName = "trivialscan"
         ProjectLeadEmail = "chris@trivialsec.com"

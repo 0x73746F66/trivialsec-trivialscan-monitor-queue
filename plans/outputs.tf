@@ -16,3 +16,6 @@ output "reconnaissance_dlq_arn" {
 output "reconnaissance_queue_arn" {
   value = aws_sqs_queue.trivialscan_reconnaissance_queue.arn
 }
+output "reconnaissance_queue_name" {
+  value = aws_sqs_queue.trivialscan_reconnaissance_queue.name
+}
