@@ -3,6 +3,7 @@ import json
 import internals
 import models
 import services.aws
+import services.webhook
 
 
 def handler(event, context):
@@ -14,7 +15,8 @@ def handler(event, context):
             continue
         _, _, account_name, *_ = object_key.split("/")
         internals.logger.info(f"account_name {account_name}")
-        scanner_record = models.ScannerRecord(account=models.MemberAccount(name=account_name).load()).load()  # type: ignore
+        account = models.MemberAccount(name=account_name).load()
+        scanner_record = models.ScannerRecord(account=account).load()  # type: ignore
         if not scanner_record or len(scanner_record.monitored_targets) == 0:
             continue
         for monitor_target in scanner_record.monitored_targets:
@@ -25,11 +27,24 @@ def handler(event, context):
                 queue_name=queue_name,
                 message_body=json.dumps({
                     'hostname': monitor_target.hostname,
-                    'port': 443,
+                    'ports': monitor_target.ports,
+                    'path_names': monitor_target.path_names,
                     'type': models.ScanRecordType.MONITORING,
                 }, default=str),
                 deduplicate=False,
-                http_paths=["/"],
-                account=account_name,  # type: ignore
-                queued_timestamp=monitor_target.timestamp,  # JavaScript support
+                account=account_name,
+                queued_timestamp=monitor_target.timestamp,
+            )
+            services.webhook.send(
+                event_name=models.WebhookEvent.HOSTED_MONITORING,
+                account=account,
+                data={
+                    'hostname': monitor_target.hostname,
+                    'ports': monitor_target.ports,
+                    'path_names': monitor_target.path_names,
+                    'type': models.ScanRecordType.MONITORING,
+                    'status': "queued",
+                    'account': account_name,
+                    'queued_timestamp': monitor_target.timestamp,
+                }
             )

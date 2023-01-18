@@ -25,5 +25,5 @@ variable "build_env" {
 variable "schedule" {
   description = "cron schedule"
   type        = string
-  default     = "cron(05 01 * * ? *)" # 01:05AM daily
+  default     = "cron(59 14 * * ? *)" # 2:59 PM UTC daily (23:59 Sydney local time)
 }

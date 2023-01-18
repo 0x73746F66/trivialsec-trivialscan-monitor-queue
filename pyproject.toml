@@ -14,8 +14,10 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 dependencies = [
-    "pydantic == 1.9.2",
+    "pydantic[email] == 1.9.2",
     "retry == 0.9.2",
+    "requests == 2.28.1",
+    "validators == 0.18.2",
 ]
 
 [tool.coverage.run]
