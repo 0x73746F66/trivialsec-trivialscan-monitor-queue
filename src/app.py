@@ -15,9 +15,13 @@ def handler(event, context):
             continue
         _, _, account_name, *_ = object_key.split("/")
         internals.logger.info(f"account_name {account_name}")
-        account = models.MemberAccount(name=account_name).load()
-        scanner_record = models.ScannerRecord(account=account).load()  # type: ignore
-        if not scanner_record or len(scanner_record.monitored_targets) == 0:
+        account = models.MemberAccount(name=account_name)
+        if not account.load():
+            internals.logger.error(f"Account record bug for {account_name}")
+            continue
+        scanner_record = models.ScannerRecord(account=account)  # type: ignore
+        if not scanner_record.load() or len(scanner_record.monitored_targets) == 0:
+            internals.logger.warning(f"No scanner record for {account_name}")
             continue
         for monitor_target in scanner_record.monitored_targets:
             if monitor_target.enabled is not True:
