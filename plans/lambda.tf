@@ -45,3 +45,9 @@ resource "aws_lambda_permission" "allow_events_bridge_to_run_lambda" {
     function_name = aws_lambda_function.trivialscan_monitor_queue.function_name
     principal = "events.amazonaws.com"
 }
+
+resource "aws_cloudwatch_log_group" "monitor_queue_logs" {
+  skip_destroy      = var.app_env == "Prod"
+  name              = "/aws/lambda/${aws_lambda_function.trivialscan_monitor_queue.function_name}"
+  retention_in_days = local.retention_in_days
+}
