@@ -14,6 +14,7 @@ from ipaddress import (
     IPv4Address,
     IPv6Address,
 )
+from uuid import UUID
 
 import boto3
 import requests
@@ -22,7 +23,6 @@ from pydantic import (
     AnyHttpUrl,
     PositiveInt,
     PositiveFloat,
-    EmailStr,
 )
 
 
@@ -233,7 +233,7 @@ class JSONEncoder(json.JSONEncoder):
                 AnyHttpUrl,
                 IPv4Address,
                 IPv6Address,
-                EmailStr,
+                UUID,
             ),
         ):
             return str(o)
