@@ -19,7 +19,7 @@ def handler(event, context):
         if not account.load():
             internals.logger.error(f"Account record bug for {account_name}")
             continue
-        scanner_record = models.ScannerRecord(account=account)  # type: ignore
+        scanner_record = models.ScannerRecord(account_name=account.name)  # type: ignore
         if not scanner_record.load() or len(scanner_record.monitored_targets) == 0:
             internals.logger.warning(f"No scanner record for {account_name}")
             continue
