@@ -61,6 +61,19 @@ data "aws_iam_policy_document" "trivialscan_monitor_queue_iam_policy" {
       "arn:aws:s3:::${data.terraform_remote_state.trivialscan_s3.outputs.trivialscan_store_bucket[0]}/${var.app_env}/*",
     ]
   }
+  statement {
+    sid = "${var.app_env}MonitorQueueDynamoDB"
+    actions   = [
+      "dynamodb:PutItem",
+      "dynamodb:GetItem",
+      "dynamodb:DeleteItem"
+    ]
+    resources = [
+      "arn:aws:dynamodb:${local.aws_default_region}:${local.aws_master_account_id}:table/${var.app_env}_report_history",
+      "arn:aws:dynamodb:${local.aws_default_region}:${local.aws_master_account_id}:table/${var.app_env}_observed_identifiers",
+      "arn:aws:dynamodb:${local.aws_default_region}:${local.aws_master_account_id}:table/${var.app_env}_early_warning_service",
+    ]
+  }
 }
 resource "aws_iam_role" "trivialscan_monitor_queue_role" {
   name               = "${lower(var.app_env)}_trivialscan_monitor_queue_lambda_role"
