@@ -66,7 +66,8 @@ data "aws_iam_policy_document" "trivialscan_monitor_queue_iam_policy" {
     actions   = [
       "dynamodb:PutItem",
       "dynamodb:GetItem",
-      "dynamodb:DeleteItem"
+      "dynamodb:DeleteItem",
+      "dynamodb:Query"
     ]
     resources = [
       "arn:aws:dynamodb:${local.aws_default_region}:${local.aws_master_account_id}:table/${var.app_env}_report_history",
