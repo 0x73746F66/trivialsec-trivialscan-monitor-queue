@@ -47,8 +47,8 @@ data "aws_iam_policy_document" "trivialscan_monitor_queue_iam_policy" {
       "s3:List*",
     ]
     resources = [
-      "arn:aws:s3:::${data.terraform_remote_state.trivialscan_s3.outputs.trivialscan_store_bucket[0]}",
-      "arn:aws:s3:::${data.terraform_remote_state.trivialscan_s3.outputs.trivialscan_store_bucket[0]}/*",
+      "arn:aws:s3:::${data.terraform_remote_state.trivialscan_s3.outputs.trivialscan_store_bucket}",
+      "arn:aws:s3:::${data.terraform_remote_state.trivialscan_s3.outputs.trivialscan_store_bucket}/*",
     ]
   }
   statement {
@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "trivialscan_monitor_queue_iam_policy" {
       "s3:PutObject",
     ]
     resources = [
-      "arn:aws:s3:::${data.terraform_remote_state.trivialscan_s3.outputs.trivialscan_store_bucket[0]}/${var.app_env}/*",
+      "arn:aws:s3:::${data.terraform_remote_state.trivialscan_s3.outputs.trivialscan_store_bucket}/${var.app_env}/*",
     ]
   }
 }
