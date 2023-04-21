@@ -26,5 +26,5 @@ variable "schedule" {
   description = "cron schedule"
   type        = string
   # default     = "rate(15 minutes)"
-  default     = "cron(59 14 * * ? *)" # 2:59 PM UTC daily (23:59 Sydney local time)
+  default = "cron(59 14 * * ? *)" # 2:59 PM UTC daily (23:59 Sydney local time)
 }

@@ -1,5 +1,5 @@
 output "trivialscan_monitor_queue_arn" {
-    value = aws_lambda_function.trivialscan_monitor_queue.arn
+  value = aws_lambda_function.trivialscan_monitor_queue.arn
 }
 output "trivialscan_monitor_queue_role" {
   value = aws_iam_role.trivialscan_monitor_queue_role.name
