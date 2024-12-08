@@ -15,11 +15,11 @@ classifiers = [
 ]
 dependencies = [
     "lumigo-tracer >= 1.1.219",
-    "pydantic == 1.9.2",
+    "pydantic == 1.10.13",
     "retry",
     "validators == 0.18.2",
     "pyjwt >= 2.6.0",
-    "requests < 2.30.0",
+    "requests < 2.33.0",
     "urllib3 < 2"
 ]
 
